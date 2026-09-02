@@ -1,0 +1,316 @@
+ * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.app {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* Header */
+
+.header {
+  background: #111827;
+  color: white;
+  padding: 25px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.header p {
+  margin: 6px 0 0;
+  color: #cbd5e1;
+}
+
+.status {
+  background: #065f46;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* Message */
+
+.message {
+  width: 86%;
+  margin: 20px auto;
+  padding: 14px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Dashboard */
+
+.dashboard {
+  width: 86%;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  color: #64748b;
+}
+
+.dashboard-card strong {
+  font-size: 32px;
+}
+
+/* Cards */
+
+.card {
+  width: 86%;
+  margin: 25px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+/* Form */
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+input,
+select {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+}
+
+.form button {
+  grid-column: span 2;
+}
+
+/* Assets */
+
+.asset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.asset-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.asset-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.asset-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.asset-header p {
+  margin: 5px 0;
+  color: #64748b;
+}
+
+.asset-info {
+  margin: 15px 0;
+}
+
+.asset-info p {
+  margin: 7px 0;
+}
+
+/* Badge */
+
+.badge {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Actions */
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.action-row select {
+  min-width: 180px;
+}
+
+/* Certificate */
+
+.certificate {
+  border: 2px solid #2563eb;
+}
+
+.certificate-box {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.certificate-box p {
+  line-height: 1.6;
+}
+
+/* QR */
+
+.qr-box {
+  margin-top: 25px;
+  padding: 20px;
+  text-align: center;
+  background: white;
+  border-radius: 10px;
+}
+
+.qr-placeholder {
+  width: 150px;
+  height: 150px;
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 8px solid #111827;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+code {
+  display: block;
+  word-break: break-all;
+  background: #e2e8f0;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Workflow */
+
+.workflow {
+  width: 86%;
+  margin: 35px auto;
+  text-align: center;
+}
+
+.workflow-steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.workflow-steps div {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.workflow-steps span {
+  font-size: 22px;
+}
+
+/* Empty */
+
+.empty {
+  color: #64748b;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .form button {
+    grid-column: span 1;
+  }
+
+  .card,
+  .dashboard,
+  .message,
+  .workflow {
+    width: 92%;
+  }
+
+}
