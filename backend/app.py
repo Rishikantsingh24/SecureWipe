@@ -1,16 +1,18 @@
 import uuid
+from datetime import datetime
+
 from fastapi import FastAPI
-from builtins import str
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from datetime import datetime
-import uuid
-from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="SecureWipe API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
         "http://localhost:5176",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
         "http://127.0.0.1:5176",
     ],
     allow_credentials=True,
@@ -18,18 +20,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173","http://localhost:5174"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
 
 # -----------------------------
 # Data Model
 # -----------------------------
+class User(BaseModel):
+    username: str
+    password: str
 class Asset(BaseModel):
     asset_tag: str
     device_type: str
@@ -39,6 +36,79 @@ class Asset(BaseModel):
 
 # Temporary storage
 assets = []
+users = []
+class UserRegister(BaseModel):
+    username: str
+    password: str
+
+
+@app.post("/register")
+def register_user(user: UserRegister):
+
+    for existing_user in users:
+        if existing_user["username"] == user.username:
+            return {
+                "message": "Username already exists",
+                "registered": False
+            }
+
+    new_user = {
+        "id": str(uuid.uuid4()),
+        "username": user.username,
+        "password": user.password
+    }
+
+    users.append(new_user)
+
+    return {
+        "message": "User registered successfully",
+        "registered": True
+    }
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
+@app.post("/login")
+def login_user(user: UserLogin):
+
+    for existing_user in users:
+        if (
+            existing_user["username"] == user.username
+            and existing_user["password"] == user.password
+        ):
+            return {
+                "message": "Login successful",
+                "logged_in": True,
+                "username": user.username
+            }
+
+    return {
+        "message": "Invalid username or password",
+        "logged_in": False
+    }
+@app.post("/login")
+def login_user(user: UserLogin):
+
+    for existing_user in users:
+        if (
+            existing_user["username"] == user.username
+            and existing_user["password"] == user.password
+        ):
+            return {
+                "message": "Login successful",
+                "logged_in": True,
+                "username": user.username
+            }
+
+    return {
+        "message": "Invalid username or password",
+        "logged_in": False
+    }
 # ------------------------------
 # Audit Logs
 # ------------------------------
@@ -328,39 +398,4 @@ def verify_certificate(certificate_id: str):
         "verified": True,
         "message": "Certificate verified successfully"
     }
-# ------------------------------
-# Generate Certificate
-# ------------------------------
-
-@app.post("/assets/{asset_id}/certificate")
-def generate_certificate(asset_id: str):
-
-    for asset in assets:
-        if asset["id"] == asset_id:
-
-            # Certificate only after successful wipe
-            if asset.get("status") != "wiped":
-                return {
-                    "message": "Asset is not wiped yet",
-                    "certificate_generated": False
-                }
-
-            certificate = {
-                "certificate_id": f"CERT-{asset_id[:8]}",
-                "asset_id": asset_id,
-                "status": "wiped",
-                "wipe_policy": asset.get(
-                    "wipe_policy",
-                    "not selected"
-                ),
-                "certificate_generated": True,
-                "message": "Certificate generated successfully"
-            }
-
-            return certificate
-
-    return {
-        "message": "Asset not found",
-        "certificate_generated": False
-    }
-
+ 

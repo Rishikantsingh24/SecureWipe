@@ -4,6 +4,36 @@ import { QRCodeSVG } from "qrcode.react";
 const API = "http://127.0.0.1:8000";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const loginUser = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${API}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.logged_in) {
+      setIsLoggedIn(true);
+      setMessage("Login successful!");
+    } else {
+      setMessage(data.message || "Invalid username or password");
+    }
+  } catch (error) {
+    setMessage("Unable to connect to backend.");
+  }
+  };
   const [assets, setAssets] = useState([]);
 
   const [form, setForm] = useState({
@@ -19,6 +49,8 @@ function App() {
   const [qrData, setQrData] = useState("");
   const [loading, setLoading] = useState(false);
   const [auditLogs, setAuditLogs] = useState([]);
+  
+   
 
   // -----------------------------
   // Get all assets
