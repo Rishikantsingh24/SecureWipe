@@ -3,13 +3,11 @@
 ## Secure Data Wiping & Asset Recycling Platform
 
 SecureWipe is a web-based platform designed to manage IT assets, securely wipe data, verify the wiping process, and generate digital certificates with QR-based verification.
-
 ## Problem Statement
 
 When organizations dispose of or recycle old IT devices, sensitive data may remain on those devices. Simply deleting files is not always enough.
 
 SecureWipe provides a structured workflow to manage assets and record the complete data-wiping process.
-
 ## Solution
 
 SecureWipe provides a simple platform where users can:
@@ -21,7 +19,6 @@ SecureWipe provides a simple platform where users can:
 - Generate a digital certificate
 - Generate QR verification data
 - Maintain audit logs
-
 ## Key Features
 
 ### 1. Asset Registration
@@ -89,3 +86,13 @@ Generate Certificate
 Generate QR Code
       ↓
 Audit Logs
+
+## Screenshots
+
+### Dashboard - Part 1
+
+![SecureWipe Dashboard](screenshots/dashboard-1.png)
+
+### Dashboard - Part 2
+
+![SecureWipe Dashboard](screenshots/dashboard-2.png)
