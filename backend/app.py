@@ -91,24 +91,6 @@ def login_user(user: UserLogin):
         "message": "Invalid username or password",
         "logged_in": False
     }
-@app.post("/login")
-def login_user(user: UserLogin):
-
-    for existing_user in users:
-        if (
-            existing_user["username"] == user.username
-            and existing_user["password"] == user.password
-        ):
-            return {
-                "message": "Login successful",
-                "logged_in": True,
-                "username": user.username
-            }
-
-    return {
-        "message": "Invalid username or password",
-        "logged_in": False
-    }
 # ------------------------------
 # Audit Logs
 # ------------------------------
