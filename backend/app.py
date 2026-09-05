@@ -92,6 +92,63 @@ def initialize_database():
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # -----------------------------
+    # Assets table
+    # -----------------------------
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS assets (
+            id SERIAL PRIMARY KEY,
+            asset_tag TEXT NOT NULL,
+            device_type TEXT NOT NULL,
+            serial_number TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'registered',
+            created_at TEXT NOT NULL,
+            organization TEXT DEFAULT '',
+            wipe_policy TEXT
+        )
+    """)
+
+    # -----------------------------
+    # Users table
+    # -----------------------------
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        )
+    """)
+
+    # -----------------------------
+    # Audit Logs table
+    # -----------------------------
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS audit_logs (
+            id TEXT PRIMARY KEY,
+            action TEXT NOT NULL,
+            asset_id TEXT,
+            details TEXT,
+            timestamp TEXT NOT NULL,
+            username TEXT
+        )
+    """)
+
+    # -----------------------------
+    # Certificates table
+    # -----------------------------
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS certificates (
+            certificate_id TEXT PRIMARY KEY,
+            asset_id TEXT NOT NULL,
+            status TEXT NOT NULL,
+            wipe_policy TEXT,
+            verified BOOLEAN DEFAULT TRUE
+        )
+    """)
+
+    # -----------------------------
+    # Safety for existing databases
+    # -----------------------------
     cur.execute("""
         ALTER TABLE assets
         ADD COLUMN IF NOT EXISTS organization TEXT DEFAULT ''
@@ -103,31 +160,8 @@ def initialize_database():
     """)
 
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-        )
-    """)
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS audit_logs (
-            id TEXT PRIMARY KEY,
-            action TEXT NOT NULL,
-            asset_id TEXT,
-            details TEXT,
-            timestamp TEXT NOT NULL
-        )
-    """)
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS certificates (
-            certificate_id TEXT PRIMARY KEY,
-            asset_id TEXT NOT NULL,
-            status TEXT NOT NULL,
-            wipe_policy TEXT,
-            verified BOOLEAN DEFAULT TRUE
-        )
+        ALTER TABLE audit_logs
+        ADD COLUMN IF NOT EXISTS username TEXT
     """)
 
     conn.commit()
@@ -493,9 +527,9 @@ def dashboard(username: str = Depends(verify_token)):
 @app.post("/assets/{asset_id}/wipe-policy")
 def select_wipe_policy(
     asset_id: str,
-    policy: WipePolicy
+    policy: WipePolicy,
+    username: str = Depends(verify_token)
 ):
-
     allowed_policies = [
         "quick",
         "standard",
@@ -538,7 +572,8 @@ def select_wipe_policy(
     add_audit_log(
         "Wipe Policy Selected",
         asset_id,
-        f"Wipe policy selected: {policy.policy}"
+        f"Wipe policy selected: {policy.policy}",
+        username
     )
 
     return {
@@ -607,7 +642,10 @@ def start_wipe(
 # -----------------------------
 
 @app.get("/assets/{asset_id}/verify")
-def verify_wipe(asset_id: str):
+def verify_wipe(
+    asset_id: str,
+    username: str = Depends(verify_token)
+):
 
     conn = get_db_connection()
     cur = conn.cursor()
