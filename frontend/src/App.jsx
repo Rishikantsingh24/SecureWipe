@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { QRCodeSVG } from "qrcode.react";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://securewipe-backend-4u3h.onrender.com";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
