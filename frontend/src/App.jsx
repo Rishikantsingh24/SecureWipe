@@ -37,6 +37,10 @@ function App() {
   // -----------------------------
   // Login
   // -----------------------------
+  const tryDemo = () => {
+    setUsername("demo");
+    setPassword("Demo@12345");
+  };
   const loginUser = async (e) => {
     e.preventDefault();
 
@@ -458,6 +462,13 @@ const downloadCertificate = async (certificateId) => {
 
             <button type="submit" className="primary-button">
               Sign In →
+            </button>
+            <button
+              type="button"
+              className="demo-button"
+              onClick={tryDemo}
+            >
+              🚀 Try Demo Account
             </button>
           </form>
 

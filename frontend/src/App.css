@@ -1556,3 +1556,21 @@ button {
     padding: 18px;
   }
 }
+.demo-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  background: transparent;
+  color: #2563eb;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.demo-button:hover {
+  background: #2563eb;
+  color: white;
+}
