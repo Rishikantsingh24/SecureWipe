@@ -349,7 +349,10 @@ def login_user(user: UserLogin):
 # -----------------------------
 
 @app.post("/assets")
-def register_asset(asset: Asset):
+def register_asset(
+    asset: Asset,
+    username: str = Depends(verify_token)
+):
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -394,15 +397,14 @@ def register_asset(asset: Asset):
     add_audit_log(
         "Asset Registered",
         str(database_id),
-        f"Asset {asset.asset_tag} registered successfully"
+        f"Asset {asset.asset_tag} registered successfully",
+        username
     )
 
     return {
         "message": "Asset registered successfully",
         "asset": new_asset
     }
-
-
 # -----------------------------
 # Get All Assets
 # -----------------------------
@@ -551,7 +553,10 @@ def select_wipe_policy(
 # -----------------------------
 
 @app.post("/assets/{asset_id}/wipe")
-def start_wipe(asset_id: str):
+def start_wipe(
+    asset_id: str,
+    username: str = Depends(verify_token)
+):
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -585,7 +590,8 @@ def start_wipe(asset_id: str):
     add_audit_log(
         "Data Wiping Completed",
         asset_id,
-        f"Data wiping completed using {wipe_policy} policy"
+        f"Data wiping completed using {wipe_policy} policy",
+        username  
     )
 
     return {
